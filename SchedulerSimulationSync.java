@@ -76,8 +76,9 @@ class SharedStats {
     // above here.
     // Think about it: ONE lock for the three variables, or ONE lock PER variable?
     // (you must justify it in MY_WORK.md)
-     // Feature 2: the three statistics are independent, so each has its own lock.
-    // This protects every read and write while allowing unrelated updates to proceed concurrently.
+    // Feature 2: the three statistics are independent, so each has its own lock.
+    // This protects every read and write while allowing unrelated updates to
+    // proceed concurrently.
     private static final ReentrantLock contextSwitchLock = new ReentrantLock();
     private static final ReentrantLock completedProcessLock = new ReentrantLock();
     private static final ReentrantLock serviceTimeLock = new ReentrantLock();
@@ -86,12 +87,13 @@ class SharedStats {
         // TODO Feature 2: protect this critical section
         contextSwitchLock.lock();
         try {
-            int tmp = contextSwitchCount;       // 1) read
-            RaceWindow.pause();                 //    <- another thread can read the SAME value here
-            contextSwitchCount = tmp + 1;       // 2) write  (one increment is lost if someone else did the same)
+            int tmp = contextSwitchCount; // 1) read
+            RaceWindow.pause(); // <- another thread can read the SAME value here
+            contextSwitchCount = tmp + 1; // 2) write (one increment is lost if someone else did the same)
         } finally {
             contextSwitchLock.unlock();
-        } }
+        }
+    }
 
     public static void incrementCompletedProcess() {
         // TODO Feature 2: protect this critical section
@@ -107,7 +109,7 @@ class SharedStats {
 
     public static void addServiceTime(int ms) {
         // TODO Feature 2: protect this critical section
-       serviceTimeLock.lock();
+        serviceTimeLock.lock();
         try {
             long tmp = totalServiceTime;
             RaceWindow.pause();
@@ -128,9 +130,10 @@ class SharedStats {
             completedProcessLock.unlock();
         }
     }
+
     public static int getContextSwitchCount() {
         // TODO Feature 2: protect this read
-         contextSwitchLock.lock();
+        contextSwitchLock.lock();
         try {
             return contextSwitchCount;
         } finally {
@@ -140,7 +143,7 @@ class SharedStats {
 
     public static long getTotalServiceTime() {
         // TODO Feature 2: protect this read
-         serviceTimeLock.lock();
+        serviceTimeLock.lock();
         try {
             return totalServiceTime;
         } finally {
@@ -161,7 +164,7 @@ class ReadyQueue {
                                                                  // and `map` here
 
     // TODO Feature 3: declare the counting semaphore that counts the processes
-     // Feature 3: one permit per process currently waiting in the ready queue.
+    // Feature 3: one permit per process currently waiting in the ready queue.
     // Initially the queue is empty, so the semaphore must also start at zero.
     private final Semaphore readyCount = new Semaphore(0);
     // waiting in the ready queue here
@@ -180,9 +183,8 @@ class ReadyQueue {
         }
 
         // TODO Feature 3: signal that one more process is available in the queue
-         
-        readyCount.release();
 
+        readyCount.release();
 
         System.out.println(Colors.BLUE + "  ➕ " + Colors.BOLD + Colors.CYAN + process.getName() + Colors.RESET +
                 Colors.BLUE + " (Priority: " + process.getPriority() + ") added to ready queue" + Colors.RESET +
@@ -193,24 +195,27 @@ class ReadyQueue {
     // Remove and return the thread at the head of the queue (or null if the queue
     // is empty)
 
-    // Block without holding queueLock until a queued process or shutdown signal is available.
+    // Block without holding queueLock until a queued process or shutdown signal is
+    // available.
     public void waitForProcess() throws InterruptedException {
         readyCount.acquire();
     }
-     // Wake every CPU so blocked workers can observe completion and terminate.
+
+    // Wake every CPU so blocked workers can observe completion and terminate.
     public void signalShutdown() {
         readyCount.release(SharedStats.totalCPUs);
     }
+
     public Thread poll() {
         // TODO Feature 1: protect this critical section
-       queueLock.lock();
+        queueLock.lock();
         try {
             if (list.isEmpty()) {
                 return null;
             }
-            Thread head = list.getFirst();      // 1) read the head of the queue
-            RaceWindow.pause();                 //    <- the lock prevents another CPU reading the same head
-            list.removeFirst();                 // 2) remove the head
+            Thread head = list.getFirst(); // 1) read the head of the queue
+            RaceWindow.pause(); // <- the lock prevents another CPU reading the same head
+            list.removeFirst(); // 2) remove the head
             return head;
         } finally {
             queueLock.unlock();
@@ -235,7 +240,8 @@ class ReadyQueue {
         try {
             StringBuilder sb = new StringBuilder();
             for (Thread t : list) {
-                if (sb.length() > 0) sb.append(" → ");
+                if (sb.length() > 0)
+                    sb.append(" → ");
                 sb.append(map.get(t).getName());
             }
             return sb.length() == 0 ? "empty" : sb.toString();
@@ -371,42 +377,43 @@ class CpuWorker extends Thread {
             // TODO Feature 3: replace this polling loop by a blocking wait on the counting
             // semaphore
 
-             try {
+            try {
                 readyQueue.waitForProcess();
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 return;
             }
 
-            // A permit can also be a shutdown signal, which does not represent a queued process.
+            // A permit can also be a shutdown signal, which does not represent a queued
+            // process.
             if (SharedStats.getCompletedProcessCount() >= SharedStats.totalProcesses) {
                 break;
             }
-              Thread thread = readyQueue.poll();
+            Thread thread = readyQueue.poll();
             Process process = readyQueue.processOf(thread);
             System.out.println(Colors.MAGENTA + "  ┌─ [CPU-" + cpuId + "] picks " + Colors.BRIGHT_CYAN +
                     process.getName() + Colors.MAGENTA + " │ Ready queue: [" + Colors.BRIGHT_WHITE +
                     readyQueue.snapshot() + Colors.MAGENTA + "]" + Colors.RESET);
 
             process.setCpuId(cpuId);
-            thread.start();                      // run one quantum
+            thread.start(); // run one quantum
             try {
-                thread.join();                   // wait for the end of the quantum
+                thread.join(); // wait for the end of the quantum
             } catch (InterruptedException e) {
                 System.out.println("CPU-" + cpuId + " interrupted.");
             }
 
             if (!process.isFinished()) {
-                readyQueue.add(process);         // not finished: back to the ready queue
+                readyQueue.add(process); // not finished: back to the ready queue
             }
         }
 
         // The worker that observes completion wakes every CPU. Workers awakened by
         // this signal repeat the check above and terminate instead of polling again.
         readyQueue.signalShutdown();
-    
-          
-}}
+
+    }
+}
 
 public class SchedulerSimulationSync {
     public static void main(String[] args) {
