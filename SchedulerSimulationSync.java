@@ -119,10 +119,16 @@ class ReadyQueue {
     // Add a process to the ready queue (new process, or a process that did not finish its quantum)
     public void add(Process process) {
         // TODO Feature 1: protect this critical section
-        Thread thread = new Thread(process);
-        list.add(thread);
-        map.put(thread, process);
-
+          Thread thread = new Thread(process);
+         queueLock.lock();
+        try {
+            list.add(thread);
+            map.put(thread, process);
+        } finally {
+            queueLock.unlock();
+        }
+       
+        
         // TODO Feature 3: signal that one more process is available in the queue
 
         System.out.println(Colors.BLUE + "  ➕ " + Colors.BOLD + Colors.CYAN + process.getName() + Colors.RESET +
