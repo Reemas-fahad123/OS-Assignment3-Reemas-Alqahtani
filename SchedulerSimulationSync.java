@@ -84,10 +84,14 @@ class SharedStats {
 
     public static void incrementContextSwitch() {
         // TODO Feature 2: protect this critical section
-        int tmp = contextSwitchCount; // 1) read
-        RaceWindow.pause(); // <- another thread can read the SAME value here
-        contextSwitchCount = tmp + 1; // 2) write (one increment is lost if someone else did the same)
-    }
+        contextSwitchLock.lock();
+        try {
+            int tmp = contextSwitchCount;       // 1) read
+            RaceWindow.pause();                 //    <- another thread can read the SAME value here
+            contextSwitchCount = tmp + 1;       // 2) write  (one increment is lost if someone else did the same)
+        } finally {
+            contextSwitchLock.unlock();
+        }
 
     public static void incrementCompletedProcess() {
         // TODO Feature 2: protect this critical section
