@@ -195,7 +195,7 @@ I organized my schedule.
 1 hour
 ---
 
-### Entry 5 - [Date and Time]
+### Entry 5 - [16,15  nov , 3 : 00 Pm]
 **What I did**:
 Video recording
 **Details**:
@@ -253,7 +253,13 @@ Setting the time
 
 **Your Answer:** *(5-7 sentences)*
 
-[Write your answer here.]
+[A "race condition" occurs when processes compete for access to a 
+shared resource—specifically, a "critical section"—which must be protected 
+using a locking mechanism. Race conditions arise when multiple processes contend 
+for this critical section; therefore, synchronization is necessary to regulate access
+and ensure fairness. Furthermore, an operation like `++contextswitchcount` is not "atomic,"
+meaning conflicts can occur—lacking proper scheduling or
+coordination—which leads to incorrect final results..]
 
 ## Question 2: What was the most challenging part of this assignment?
 
@@ -261,7 +267,12 @@ Setting the time
 
 **Your Answer:** *(5-7 sentences)*
 
-[Write your answer here.]
+[choosing the lock granularity Choosing the lock settings—yes. I also
+encountered significant difficulty in this section while filming the video. Explaining the features—such as 
+setting up a single master key . to protect everything—is straightforward; however, one might wonder why you would need multiple keys 
+instead. While using multiple keys allows for synchronization and requires careful management, 
+it could also be a potential .vulnerability if not handled 
+correctly.]
 
 ## Question 3: How did you overcome the challenges you faced?
 
