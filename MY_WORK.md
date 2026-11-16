@@ -132,69 +132,82 @@
 
 ## Your Development Log
 
-### Entry 1 - [Date and Time]
+### Entry 1 - [12 nov , 5: 00 Am]
 **What I did**:
-
+I have pulled the repository into my own repositories 
 **Details**:
-
+ - fork repostiry into own repositories 
+- linked the code to the VC code.
+ - read read.md
+ - I read through all the features and got a general overview.
 **Challenges**:
-
+Time Management
 **Solution**:
-
+Scheduling
 **Time spent**:
-
+20  m 
 ---
 
-### Entry 2 - [Date and Time]
+### Entry 2 - [13 nov , 2 :00 pm ]
 **What I did**:
-
+I’ve read the code and the requirements.
 **Details**:
-
+- I understood the code.
+— I figured out what it’s intended to do.
+— I experimented with it and identified what needs to be added or what is currently missing.
+— I finished reading through the code and understanding how its parts connect.
 **Challenges**:
-
+Track feature code segments
 **Solution**:
-
+I have organized each piece of code and its features using comments.
 **Time spent**:
-
+40 m
 ---
 
-### Entry 3 - [Date and Time]
+### Entry 3 - [14 nov, 9 : 00 pm ]
 **What I did**:
-
+set my student ID
 **Details**:
-
+I updated my university ID number,
+entered the code into VS Code, 
+and implemented the features.
 **Challenges**:
-
+Track code and time
 **Solution**:
-
+I have organized
 **Time spent**:
-
+1:30  hours
 ---
 
-### Entry 4 - [Date and Time]
+### Entry 4 - [15 nov , 1 : 00 Am]
 **What I did**:
-
+ validition 
 **Details**:
-
+Verifying that the features are complete,
+implementing the third feature, 
+running the code, validating it,
+and analyzing the output.
 **Challenges**:
-
+Difficulty in controlling
 **Solution**:
-
+I organized my schedule.
 **Time spent**:
-
+1 hour
 ---
 
 ### Entry 5 - [Date and Time]
 **What I did**:
-
+Video recording
 **Details**:
-
+I followed the explanation of the code, 
+uploaded the video to Google Drive, 
+and verified that everything was complete.
 **Challenges**:
-
+Filming the clip
 **Solution**:
-
+Adjusting the clip's timing
 **Time spent**:
-
+50 m
 ---
 
 ### Entry 6 - [Optional - Date and Time]
@@ -214,14 +227,14 @@
 
 > 💡 **TIP:** Fill this in **last**, after all entries are written.
 
-**Total time spent on assignment**: [X hours]
+**Total time spent on assignment**: [4:20 hours]
 
 **Most challenging part**:
-
+Filming the clip
 **Most interesting learning**:
-
+Code tracking
 **What I would do differently next time**:
-
+Setting the time
 ---
 
 # Part B: Reflection (0.5 mark)
