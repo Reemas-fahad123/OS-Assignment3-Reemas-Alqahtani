@@ -32,9 +32,9 @@
 
 | Field | Your Answer |
 |-------|-------------|
-| **Full Name** | [Write your full name here] |
-| **Student ID** | [Write your student ID here] |
-| **University Email** | [yourid]@std.psau.edu.sa |
+| **Full Name** | [Reemas  fahad Alqhtani] |
+| **Student ID** | [446051392] |
+| **University Email** | [446051392]@std.psau.edu.sa |
 | **GitHub Username** | [your-github-username] |
 | **Repository Link** | [Paste your repository link here] |
  
@@ -280,7 +280,11 @@ correctly.]
 
 **Your Answer:** *(5-7 sentences)*
 
-[Write your answer here.]
+[There were many difficulties with this assignment.
+I overcame them by organizing my tasks, maintaining focus, managing my time, and carefully 
+reading the assignment instructions. I followed each instruction
+one by one; whenever I encountered errors. I would review the code.run it again, and keep checking until the code worked and the program executed correctly. I also focused on understanding the
+"ready queue," "shared state," and "semaphores.".]
 
 ## Question 4: Where can synchronization concepts be applied in real-world applications?
 
@@ -288,7 +292,11 @@ correctly.]
 
 **Your Answer:** *(5-7 sentences)*
 
-[Write your answer here.]
+[A prime example—which the professor mentioned during the 
+lecture—is when a session is underway and others wish to join; I must ask 
+them to wait and form a queue until I am finished. This synchronization is essential to prevent "race conditions."
+Another example, drawn from the slides as well as my own experience, concerns banking transactions—specifically transfers—where a
+system might read an account balance only once for multiple operations; this is a critical error. Other examples, found in both software and hardware, include print queues. In all these cases, multiple operations share a common resource.]
 
 ### Optional: What would you like to learn more about?
 
@@ -322,20 +330,26 @@ correctly.]
 
 **Your Answer:** *(3-5 sentences)*
 
-[Write your answer here.]
+[In the case of `contextSwitchCount`, multiple processes might
+attempt to read or update the value; without proper protection—such as implementing a lock—an update could be lost,
+leading to a race condition. I have now resolved this by adding a lock. The expected result is 21; without such protection.
+the value could end up being something
+else, like 13.]
 
 Verification block of the **original starter**:
 ```
-[Paste the verification block (or the exception/watchdog message) of the starter here]
+[Context switches (quanta executed)     expected 34       observed 28       ? MISMATCH]
 ```
 
 Verification block of **my final version**:
 ```
-[Paste the verification block of your final version here (all lines ✔)]
+[ Context switches (quanta executed): expected 21, observed 21.]
 ```
 
 **Explanation of the timeline:**
-[Explain the lost update step by step.]
+[For example, one process reads 12, another reads 14,
+a third reads 14, and a fourth reads 12; consequently, 
+updates are lost, leading to a "race condition" problem.]
 
 ## Question 2: Critical Sections and Lock Granularity
 
@@ -345,12 +359,15 @@ Verification block of **my final version**:
 
 **Your Answer:** *(3-5 sentences)*
 
-[Write your answer here.]
+[I protected the process queue functions—such as `add`, `pool`, and 
+`processOf`—using `queueLock.lock()`. Within the shared state, I also implemented locks 
+to protect variables like the number of context switches and the count of completed processes
+. Using separate locks allows for the independent updating of these statistics without causing unnecessary blocking.]
 
 | Critical section (variable / method) | Lock used | Why it needs protection |
-|---|---|---|
+|-contextSwitchCount;  --|-- contextSwitchLock.lock();-|-Context switch protection--|
 | [e.g., `ReadyQueue.poll()`] | [lock name] | [reason] |
-| [...] | [...] | [...] |
+| [.processOf..] | [.. queueLock.lock();.] | [.Protecting the map and the queue..] |
 
 ## Question 3: Busy Waiting vs Semaphore
 
@@ -360,7 +377,9 @@ Verification block of **my final version**:
 
 **Your Answer:** *(3-5 sentences)*
 
-[Write your answer here.]
+[Previously, there was a waiting period that resulted in wasted resources;
+processors would repeatedly check the process queue even when it was empty. Now, a
+semaphore is used—initialized to zero, since the queue is initially empty. The processor calls "acquire" before taking a process from the queue, and "release" once the task is completed.]
 
 ## Question 4: Classical Problems and Deadlock
 
@@ -371,24 +390,24 @@ Verification block of **my final version**:
 **Your Answer:** *(3-5 sentences)*
 
 **Classical problem and roles**:
-[Name the problem; who is the producer, who is the consumer?]
+[The process generator acts as the producer, while the processors function as consumers, taking processes from the process queue]
 
 **Semaphores for a bounded queue (name and initial value)**:
-[Name the three semaphores and their initial values.]
+[f the queue has a capacity of k, we use a semaphore named `empty` (initialized to k), another named `full` (initialized to 0), and a mutex (initialized to 1).]
 
 **Deadlock scenario and prevention**:
-[Describe the scenario and the necessary condition you would break.]
+[A deadlock may occur if the producer retains the mutex while waiting for an available slot in the queue]
 
 ## Summary
 
 **Key concepts I understood through these questions:**
-1.
-2.
-3.
+1.Locks
+2.Race Conditions,
+3. and Synchronization
 
 **Concepts I need to study more:**
-1.
-2.
+1.How are operations actually regulated to handle concurrent access?
+2.Setting a lock—or rather, how many locks should be set?
 
 ---
 
