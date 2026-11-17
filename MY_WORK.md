@@ -35,7 +35,7 @@
 | **Full Name** | [Reemas  fahad Alqhtani] |
 | **Student ID** | [446051392] |
 | **University Email** | [446051392]@std.psau.edu.sa |
-| **GitHub Username** | [your-github-username] |
+| **GitHub Username** | [Reemas-fahad123] |
 | **Repository Link** | [Paste your repository link here] |
  
 ---
